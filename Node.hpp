@@ -4,7 +4,8 @@
   Assignment number: Project 1
 
   This file holds the Node class which will contain the userid as well as
-  encrypted passwords created by the VigenereCipher class.
+  encrypted passwords created by the VigenereCipher class. This class will be used
+  for the linked list implementation in the HashTable class.
 ***************************************************************/
 
 #ifndef NODE_HPP
