@@ -12,12 +12,16 @@
 #ifndef HASHTABLE_HPP
 #define HASHTABLE_HPP
 #include "Node.hpp"
+#include <string>
+using namespace std;
 
 class HashTable {
-private:
+
+  private:
     Node** table;
     int size;
-public:
+
+  public:
     //Constructor and Destructor
     HashTable(int size);
     ~HashTable();

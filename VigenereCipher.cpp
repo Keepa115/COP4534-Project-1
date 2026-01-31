@@ -3,27 +3,17 @@
   File Name: VigenereCipher.cpp
   Assignment number: Project 1
 
-
-  The VigenereCipher class will be used to encrypt passwords.
+  This file implements the Vigenere cipher encryption function.
 ***************************************************************/
 
 #include "VigenereCipher.hpp"
-#include <string>
 using namespace std;
 
-class VigenereCipher {
-public:
-    static string encrypt(const string& password, const string& key) {
-        string encryptedPassword;
-        int keyLength = key.length();
-        //cuts each character from the password and shifts according to the key
-        for (size_t i = 0; i < password.length(); ++i) {
-            char charPassword = password[i];
-            char charKey = key[i % keyLength];
-            char encryptedChar = ((charPassword - 'a') + (charKey - 'a')) % 26 + 'a';
-            encryptedPassword += encryptedChar;
-        }
-        return encryptedPassword;
+string encrypt(const string& plaintext, const string& key) {
+    string ciphertext = plaintext;
+    for (size_t i = 0; i < plaintext.length(); ++i) {
+        int shift = key[i % key.length()] - 'a';
+        ciphertext[i] = ((plaintext[i] - 'a' + shift) % 26) + 'a';
     }
-
-};
+    return ciphertext;
+}

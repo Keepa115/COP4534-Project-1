@@ -8,64 +8,58 @@
 ***************************************************************/
 
 #include "HashTable.hpp"
+#include <string>
+using namespace std;
 
-class HashTable {
-private:
-    Node** table;
-    int size;
-public:
-    //Constructor and Destructor
-    HashTable(int size){
-        this->size = size;
-        table = new Node*[size];
-        for (int i = 0; i < size; i++) {
-            table[i] = nullptr;
-        }
+HashTable::HashTable(int size) : size(size) {
+    table = new Node*[size];
+    for (int i = 0; i < size; ++i) {
+        table[i] = nullptr;
     }
+}
 
-    ~HashTable(){
-        for (int i = 0; i < size; i++) {
-            Node* current = table[i];
-            while (current != nullptr) {
-                Node* toDelete = current;
-                current = current->next;
-                delete toDelete;
-            }
-        }
-        delete[] table;
-    }
-    
-    //Methods
-    void insert(const string& userid, const string& encryptedPassword){
-        int index = hash(userid);
-        Node* newNode = new Node(userid, encryptedPassword);
-        if (table[index] == nullptr) {
-            table[index] = newNode;
-        } else {
-            Node* current = table[index];
-            while (current->next != nullptr) {
-                current = current->next;
-            }
-            current->next = newNode;
-        }
-    }
-    string find(const string& userid) const{
-        int index = hash(userid);
-        Node* current = table[index];
+HashTable::~HashTable() {
+    for (int i = 0; i < size; ++i) {
+        Node* current = table[i];
         while (current != nullptr) {
-            if (current->userid == userid) {
-                return current->encryptedPassword;
-            }
+            Node* temp = current;
+            current = current->next;
+            delete temp;
+        }
+    }
+    delete[] table;
+}
+
+void HashTable::insert(const string& userid, const string& encryptedPassword){
+    int index = hash(userid);
+    Node* newNode = new Node(userid, encryptedPassword);
+    if (table[index] == nullptr) {
+        table[index] = newNode;
+    } else {
+        Node* current = table[index];
+        while (current->next != nullptr) {
             current = current->next;
         }
-        return ""; // Return empty string if userid not found
+        current->next = newNode;
     }
-    int hash(const string& userid) const{
-        int hashValue = 0;
-        for (char ch : userid) {
-            hashValue += static_cast<int>(ch);
-        }
-        return hashValue % size;
-    }
+}
 
-};
+string HashTable::find(const string& userid) const{
+    int index = hash(userid);
+    Node* current = table[index];
+    while (current != nullptr) {
+        if (current->userid == userid) {
+            return current->encryptedPassword;
+        }
+        current = current->next;
+    }
+    return ""; // Return empty string if userid not found
+}
+
+int HashTable::hash(const string& userid) const{
+    int hashValue = 0;
+    for (char ch : userid) {
+        hashValue += static_cast<int>(ch);
+    }
+    return hashValue % this->size;
+}   
